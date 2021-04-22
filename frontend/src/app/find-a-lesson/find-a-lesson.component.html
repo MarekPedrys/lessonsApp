@@ -1,0 +1,24 @@
+<div style="margin-top: 5%">
+    <div class="card col-lg-4 col-md-6 col-sm-10" style="margin:2% auto 0; background-color: rgba(255,255,255,0.8)">
+      <h4>Find a lesson</h4>
+    </div>
+    <div class="card col-lg-4 col-md-6 col-sm-10" style="margin:2% auto 0; background-color: rgba(255,255,255,0.8)"
+         *ngFor="let lesson of lessons">
+      <div class="card-header">
+        <h4>{{lesson.subject}}2</h4>
+      </div>
+      <div class="card-body">
+        <p class="card-text">Teacher: {{lesson.teacher}}
+          (<a href="mailto:{{lesson.teacherEmail}}">{{lesson.teacherEmail}}</a>)
+          <img src="{{lesson.teacherPhoto}}"
+               alt="teacher's photo" width="130" height="110" style="float: right; object-fit: cover">
+        </p>
+        <p class="card-text">Date: {{lesson.date}}</p>
+        <p class="card-text">Time: {{lesson.time}}</p>
+        <h5 class="card-text">{{lesson.price}} € for {{lesson.duration}} minutes </h5>
+        <p class="card-text">{{lesson.pupil}}</p>
+        <a class="btn btn-primary" (click)="orderLesson(lesson.id)"
+           *ngIf="loggedUserRole==='ROLE_PUPIL'">Order this lesson</a>
+      </div>
+    </div>
+  </div>

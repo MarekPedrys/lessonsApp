@@ -1,0 +1,45 @@
+<div style="margin-top: 5%">
+    <div class="card col-lg-8 col-md-10 col-sm-12" style="margin: 2% auto 0; background-color: rgba(255,255,255,0.8)">
+      <h4>My lessons</h4>
+    </div>
+  
+    <div class="card col-lg-8 col-md-10 col-sm-12" style="margin: 2% auto 0; background-color: rgba(255,255,255,0.8)">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <!--      <th scope="col">Id</th>-->
+          <th scope="col">Subject</th>
+          <th scope="col">Date</th>
+          <th scope="col">Time</th>
+          <th scope="col">Duration</th>
+          <th scope="col">Price</th>
+          <th scope="col" *ngIf="loggedUserRole==='ROLE_PUPIL'">Teacher</th>
+          <th scope="col" *ngIf="loggedUserRole==='ROLE_PUPIL'">Photo</th>
+          <th scope="col" *ngIf="loggedUserRole==='ROLE_PUPIL'">Email</th>
+          <th scope="col" *ngIf="loggedUserRole==='ROLE_TEACHER'">Pupil</th>
+          <th scope="col" *ngIf="loggedUserRole==='ROLE_TEACHER'">Photo</th>
+          <th scope="col" *ngIf="loggedUserRole==='ROLE_TEACHER'">Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let lesson of lessons" align="center">
+          <!--      <td>{{lesson.id}}</td>-->
+          <td>{{lesson.subject}}</td>
+          <td>{{lesson.date}}</td>
+          <td>{{lesson.time}}</td>
+          <td>{{lesson.duration}} min</td>
+          <td>{{lesson.price}} €</td>
+          <td *ngIf="loggedUserRole==='ROLE_PUPIL'">{{lesson.teacher}}</td>
+          <td *ngIf="loggedUserRole==='ROLE_PUPIL'"><img src="{{lesson.teacherPhoto}}"
+                                                         alt="teacher's photo" width="65" height="55" style="float: right; object-fit: cover"></td>
+          <td *ngIf="loggedUserRole==='ROLE_PUPIL'">{{lesson.teacherEmail}}</td>
+          <td *ngIf="loggedUserRole==='ROLE_TEACHER'">{{lesson.pupil}}</td>
+          <td *ngIf="loggedUserRole==='ROLE_TEACHER'"><img src="{{lesson.pupilPhoto}}"
+                                                           alt="pupil's photo" width="65" height="55" style="float: right; object-fit: cover"></td>
+          <td *ngIf="loggedUserRole==='ROLE_TEACHER'">{{lesson.pupilEmail}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

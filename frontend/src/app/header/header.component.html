@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+<nav class="navbar navbar-light bg-light">
+    <span class="navbar-brand mb-0 h1">
+       <img src="../../assets/logo.png"
+            width="100" height="40" class="d-inline-block align-top" alt="">
+      </span>
+  </nav>
+
+<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+    <li class="nav-item">
+        <a class="nav-link" href="find-a-lesson" 
+        [class.invisible]="!loggedUserRole"><i class="bi bi-search"></i>  Find a lesson</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="my-lessons" (click)="hideNewOrderBadge()"
+        [class.invisible]="!loggedUserRole"><i class="bi bi-list"></i> My lessons
+        <span class="badge bg-danger" [class.invisible]="loggedUserHasNewOrder==='false'">new</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="offer-a-lesson"
+        [class.invisible]="!(loggedUserRole==='ROLE_TEACHER')"><i class="bi bi-plus-circle"></i> Offer a lesson</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="sign-up"
+        [class.invisible]="loggedUserRole"><i class="bi bi-person-plus-fill"></i> Sign up</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href=""
+        [class.invisible]="loggedUserRole"><i class="bi bi-box-arrow-in-right"></i> Log in</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="" (click)="logout()"
+        [class.invisible]="!loggedUserRole"><i class="bi bi-box-arrow-left"></i> Log out</a>
+    </li>
+</ul>
+<table *ngIf="loggedUserName">
+    <tr>
+      <td><img src="{{loggedUserPhoto}}"
+               alt="user's photo" width="65" height="55" style="float: right; object-fit: cover"></td>
+    </tr>
+    <tr>
+      <td align="center">{{loggedUserName}}</td>
+    </tr>
+  </table>
+</nav>
