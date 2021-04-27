@@ -15,7 +15,7 @@ export class SignUpComponent {
   role: string;
   email: string;
   photo: string;
-  singUpUrl = 'http://localhost:8080/user/signup';
+  singUpUrl = 'http://localhost:8080/api/users';
   validationErrors: UserValidationErrors = {};
   submitted = false;
 
@@ -30,7 +30,7 @@ export class SignUpComponent {
       .subscribe(
         () => {
           this.submitted = true;
-          alert('User succesfully added. Log in now.');
+          alert('User succesfully signed up. Log in now.');
           this.router.navigate(['']);
         },
         errorResponse => {

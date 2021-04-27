@@ -11,6 +11,7 @@ public class LessonDTO {
     private String time;
     private int duration;
     private BigDecimal price;
+    private Long teacherID;
     private String teacher;
     private String teacherEmail;
     private String teacherPhoto;
@@ -19,13 +20,14 @@ public class LessonDTO {
     private String pupilPhoto;
 
 
-    public LessonDTO(Long id, String subject, LocalDate date, LocalTime time, int duration, BigDecimal price, String teacher, String teacherEmail, String teacherPhoto, String pupil, String pupilEmail, String pupilPhoto) {
+    public LessonDTO(Long id, String subject, LocalDate date, LocalTime time, int duration, BigDecimal price, Long teacherID, String teacher, String teacherEmail, String teacherPhoto, String pupil, String pupilEmail, String pupilPhoto) {
         this.id = id;
         this.subject = subject;
         this.date = date;
         this.time = time.toString().substring(0,5);
         this.duration = duration;
         this.price = price;
+        this.teacherID = teacherID;
         this.teacher = teacher;
         this.teacherEmail = teacherEmail;
         this.teacherPhoto = teacherPhoto;
@@ -128,4 +130,8 @@ public class LessonDTO {
     public void setPupilPhoto(String pupilPhoto) {
         this.pupilPhoto = pupilPhoto;
     }
+
+    public Long getTeacherID() { return teacherID; }
+
+    public void setTeacherID(Long teacherID) { this.teacherID = teacherID; }
 }

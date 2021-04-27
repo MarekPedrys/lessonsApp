@@ -10,7 +10,6 @@ import {Router} from '@angular/router';
 })
 export class FindALessonComponent implements OnInit {
   loggedUserRole = localStorage.getItem('loggedUserRole');
-  private url = 'http://localhost:8080/lesson';
   lessons: LessonDTO[] = [];
 
   constructor(private httpClient: HttpClient, private router: Router) {
@@ -21,13 +20,13 @@ export class FindALessonComponent implements OnInit {
   }
 
   private loadData(): void {
-    this.httpClient.get<LessonDTO[]>(this.url)
+    this.httpClient.get<LessonDTO[]>('http://localhost:8080/api/lessons')
       .subscribe(lessons => this.lessons = lessons);
   }
 
   // needs to be corrected (you can order a lesson that has already been ordered) !!!
   orderLesson(id: number): void {
-    this.httpClient.post(this.url + '/' + id, {})
+    this.httpClient.put('http://localhost:8080/api/lessons/' + id, {})
       .subscribe(
         () => {
           alert('Lesson successfully ordered.');

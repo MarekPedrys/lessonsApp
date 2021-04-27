@@ -16,7 +16,7 @@ export class OfferALessonComponent implements OnInit {
   time: string;
   duration: number;
   price: number;
-  addLessonUrl = 'http://localhost:8080/lesson';
+  offerLessonUrl = 'http://localhost:8080/api/lessons';
   submitted = false;
   validationErrors: LessonValidationErrors = {};
 
@@ -26,14 +26,14 @@ export class OfferALessonComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addLesson(): void {
+  offerALesson(): void {
     const newLesson = new Lesson(this.subject, this.date, this.time, this.duration, this.price);
-    this.httpClient.post(this.addLessonUrl, newLesson)
+    this.httpClient.post(this.offerLessonUrl, newLesson)
       .subscribe(
         () => {
           this.submitted = true;
-          alert('Lesson succesfully added.');
-          this.router.navigate(['lesson-add']).then(() => location.reload());
+          alert('Lesson succesfully offered.');
+          this.router.navigate(['offer-a-lesson']).then(() => location.reload());
         },
         errorResponse => {
           this.submitted = true;

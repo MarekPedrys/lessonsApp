@@ -1,7 +1,7 @@
 <div class="col-lg-2 col-md-4 col-sm-6" style="margin: 10% auto 0; background-color: rgba(255,255,255,0.8)">
     <form (ngSubmit)="signUpUser()">
       <div class="form-group">
-        <label for="usernameInput" style="margin-top: 0.2cm">Login</label>
+        <label for="usernameInput" style="margin-top: 0.2cm">Username</label>
         <input type="text" class="form-control" name="username" id="usernameInput"
                [(ngModel)]="username"
                [class.is-invalid]="validationErrors.username"

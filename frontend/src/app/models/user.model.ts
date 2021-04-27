@@ -5,6 +5,7 @@ export class User {
     role: string;
     email: string;
     photo: string;
+    hasNewOrder: boolean;
   
   
     constructor(username: string, password: string, role: string, email: string, photo: string) {
@@ -13,5 +14,6 @@ export class User {
       this.role = role;
       this.email = email;
       this.photo = photo;
+      this.hasNewOrder = false;
     }
   }

@@ -1,34 +1,41 @@
 package pl.marekpedrys.lessonsbackendspring.user;
 
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import pl.marekpedrys.lessonsbackendspring.lesson.Lesson;
+import pl.marekpedrys.lessonsbackendspring.lesson.LessonDTO;
+import pl.marekpedrys.lessonsbackendspring.lesson.LessonRepository;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
-@RequestMapping("/user")
+@RequestMapping("/api/users")
 public class UserController {
     private final UserRepository userRepository;
+    private final LessonRepository lessonRepository;
     private final PasswordEncoder passwordEncoder;
+    User dummyPupil = new User();
 
-    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserController(LessonRepository lessonRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.lessonRepository = lessonRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/signup")
+    @PostMapping
     public void create(@Valid @RequestBody User user) {
         String newPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(newPassword);
         userRepository.save(user);
     }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public UserDTO login() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
@@ -41,53 +48,70 @@ public class UserController {
                 .getAuthority();
 
         User user = (User) securityContext.getAuthentication().getPrincipal();
-
+        Long id = user.getId();
         boolean hasNewOrder = user.HasNewOrder();
         String photo = user.getPhoto();
 
-        return new UserDTO(username, role, hasNewOrder, photo);
+        return new UserDTO(id, username, role, hasNewOrder, photo);
     }
 
-    @PostMapping("/hideNewOrderBadge")
-    @Secured("ROLE_TEACHER")
-    public void newOrder(){
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        User teacher = (User) securityContext.getAuthentication().getPrincipal();
-        teacher.setHasNewOrder(false);
-        userRepository.save(teacher);
+    @PutMapping("/{userId}")
+    public void updateTeacherHasNewOrder(@PathVariable Long userId, @RequestBody Boolean requestHasNewOrder) {
+        User storedTeacher = userRepository.findById(userId).get();
+        storedTeacher.setHasNewOrder(requestHasNewOrder);
+        userRepository.save(storedTeacher);
+    }
+
+    @GetMapping("/{userId}/lessons")
+    public List<LessonDTO> getUsersLessons(@PathVariable Long userId) {
+        User user = userRepository.findById(userId).get();
+        String role = user.getRole();
+
+        if (role.equals("TEACHER")) {
+            List<Lesson> lessons = lessonRepository.findLessonsByTeacher(user);
+
+            lessons.stream()
+                    .forEach(lesson -> {
+                        if (lesson.getPupil() == null) {
+                            lesson.setPupil(dummyPupil);
+                        }
+                    });
+
+            return lessonsToDTO(lessons);
+        } else {
+            List<Lesson> lessons = lessonRepository.findLessonsByPupil(user);
+
+            lessons.stream()
+                    .forEach(lesson -> {
+                        if (lesson.getPupil() == null) {
+                            lesson.setPupil(dummyPupil);
+                        }
+                    });
+
+            return lessonsToDTO(lessons);
+        }
+
+
+    }
+
+    private List<LessonDTO> lessonsToDTO(List<Lesson> lessons) {
+        return lessons.stream()
+                .map(lesson -> new LessonDTO(
+                        lesson.getId(),
+                        lesson.getSubject(),
+                        lesson.getDate(),
+                        lesson.getTime(),
+                        lesson.getDuration(),
+                        lesson.getPrice(),
+                        lesson.getTeacher().getId(),
+                        lesson.getTeacher().getUsername(),
+                        lesson.getTeacher().getEmail(),
+                        lesson.getTeacher().getPhoto(),
+                        lesson.getPupil().getUsername(),
+                        lesson.getPupil().getEmail(),
+                        lesson.getPupil().getPhoto()))
+                .collect(Collectors.toList());
     }
 
 
-    //    //------------- just for testing: -------------------------
-////
-//    @GetMapping("/secured-content")
-//    public List<String > exampleSecuredContent() {
-//        return Arrays.asList("AAA","B","CcC");
-//    }
-//
-//    @Secured("ROLE_TEACHER")
-//    @GetMapping("/teacher")
-//    public String example1() {
-//        return "You're a teacher.";
-//    }
-//
-//    @Secured("ROLE_PUPIL")
-//    @GetMapping("/pupil")
-//    public String example2() {
-//        return "You're a pupil.";
-//    }
-//
-//    @GetMapping("/user-details1")
-//    public String ud1(Principal principal) {
-////        User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-//        return principal.getName();
-//    }
-//
-//    @GetMapping("/user-details2")
-//    public String ud2() {
-//        SecurityContext context = SecurityContextHolder.getContext();
-////        User user = (User) context.getAuthentication().getPrincipal();
-//        return context.getAuthentication()
-//                .getName();
-//    }
 }

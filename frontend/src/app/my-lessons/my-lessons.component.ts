@@ -8,10 +8,11 @@ import {HttpClient} from '@angular/common/http';
   styleUrls: ['./my-lessons.component.css']
 })
 export class MyLessonsComponent implements OnInit {
-  private urlTeacher = 'http://localhost:8080/lesson/byTeacher';
-  private urlPupil = 'http://localhost:8080/lesson/byPupil';
   lessons: LessonDTO[] = [];
+  loggedUserId = localStorage.getItem('loggedUserId');
   loggedUserRole = localStorage.getItem('loggedUserRole');
+
+  private url = 'http://localhost:8080/api/users/' + this.loggedUserId + '/lessons';
 
   constructor(private httpClient: HttpClient) {
   }
@@ -21,13 +22,8 @@ export class MyLessonsComponent implements OnInit {
   }
 
   private loadData(): void {
-    if (this.loggedUserRole === 'ROLE_TEACHER') {
-      this.httpClient.get<LessonDTO[]>(this.urlTeacher)
-        .subscribe(lessons => this.lessons = lessons);
-    } else if (this.loggedUserRole === 'ROLE_PUPIL') {
-      this.httpClient.get<LessonDTO[]>(this.urlPupil)
-        .subscribe(lessons => this.lessons = lessons);
-    }
-  }
+    this.httpClient.get<LessonDTO[]>(this.url)
+    .subscribe(lessons => this.lessons = lessons);
 
+}
 }

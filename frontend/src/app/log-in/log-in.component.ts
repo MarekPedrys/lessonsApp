@@ -31,9 +31,10 @@ export class LogInComponent {
   }
 
   private login(errorCallback?: () => void): void {
-    this.httpClient.post<LoggedUser>('http://localhost:8080/user/login', {})
+    this.httpClient.get<LoggedUser>('http://localhost:8080/api/users/login')
       .subscribe(loggedUser => {
           this.loggedUser = loggedUser;
+          localStorage.setItem('loggedUserId', String(loggedUser.id));
           localStorage.setItem('loggedUserName', loggedUser.username);
           localStorage.setItem('loggedUserRole', loggedUser.role);
           localStorage.setItem('loggedUserHasNewOrder', String(loggedUser.hasNewOrder));

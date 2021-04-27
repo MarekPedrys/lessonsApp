@@ -43,8 +43,8 @@ public class User implements UserDetails {
         this.role = role;
         this.email = email;
         this.photo = photo;
+        this.hasNewOrder = false;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -5,6 +5,7 @@ export interface LessonDTO {
     time: string;
     duration: number;
     price: number;
+    teacherId: number;
     teacher: string;
     teacherEmail: string;
     teacherPhoto: string;

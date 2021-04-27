@@ -31,11 +31,11 @@
           <td>{{lesson.price}} €</td>
           <td *ngIf="loggedUserRole==='ROLE_PUPIL'">{{lesson.teacher}}</td>
           <td *ngIf="loggedUserRole==='ROLE_PUPIL'"><img src="{{lesson.teacherPhoto}}"
-                                                         alt="teacher's photo" width="65" height="55" style="float: right; object-fit: cover"></td>
+                                                         alt=" " width="65" height="55" style="float: right; object-fit: cover"></td>
           <td *ngIf="loggedUserRole==='ROLE_PUPIL'">{{lesson.teacherEmail}}</td>
           <td *ngIf="loggedUserRole==='ROLE_TEACHER'">{{lesson.pupil}}</td>
           <td *ngIf="loggedUserRole==='ROLE_TEACHER'"><img src="{{lesson.pupilPhoto}}"
-                                                           alt="pupil's photo" width="65" height="55" style="float: right; object-fit: cover"></td>
+                                                           alt=" " width="65" height="55" style="float: right; object-fit: cover"></td>
           <td *ngIf="loggedUserRole==='ROLE_TEACHER'">{{lesson.pupilEmail}}</td>
         </tr>
         </tbody>

@@ -1,7 +1,8 @@
 export class LoggedUser {
-    username: string;
-    role: string;
-    hasNewOrder: boolean;
-    photo: string;
-  }
+  id: number;
+  username: string;
+  role: string;
+  hasNewOrder: boolean;
+  photo: string;
+} 
   

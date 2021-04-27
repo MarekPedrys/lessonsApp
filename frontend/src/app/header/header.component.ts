@@ -9,6 +9,7 @@ import {LoggedUser} from '../models/logged-user.model';
 })
 
 export class HeaderComponent implements OnInit {
+  loggedUserId = localStorage.getItem('loggedUserId')
   loggedUserRole = localStorage.getItem('loggedUserRole');
   loggedUserName = localStorage.getItem('loggedUserName');
   loggedUserHasNewOrder = localStorage.getItem('loggedUserHasNewOrder');
@@ -18,13 +19,13 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    setInterval(() => this.checkIfHasNewOrder(), 2000);
+    setInterval(() => this.checkIfHasNewOrder(), 1000);
   }
 
   // window.location.reload() needs to be replaced...
   checkIfHasNewOrder(): void {
     if (this.loggedUserHasNewOrder === 'false') {
-      this.httpClient.post<LoggedUser>('http://localhost:8080/user/login', {})
+      this.httpClient.get<LoggedUser>('http://localhost:8080/api/users/login', {})
         .subscribe(loggedUser => {
           if (String(loggedUser.hasNewOrder) === 'true') {
             localStorage.setItem('loggedUserHasNewOrder', 'true');
@@ -44,7 +45,8 @@ export class HeaderComponent implements OnInit {
   }
 
   hideNewOrderBadge(): void {
-    this.httpClient.post('http://localhost:8080/user/hideNewOrderBadge', {})
+    const bodyBoolean = false;
+    this.httpClient.put('http://localhost:8080/api/users/' + this.loggedUserId, bodyBoolean)
       .subscribe();
     localStorage.setItem('loggedUserHasNewOrder', 'false');
   }
