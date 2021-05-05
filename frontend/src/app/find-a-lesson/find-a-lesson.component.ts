@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {LessonDTO} from '../models/lesson-DTO.model';
 import {Router} from '@angular/router';
 
@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 export class FindALessonComponent implements OnInit {
   loggedUserRole = localStorage.getItem('loggedUserRole');
   lessons: LessonDTO[] = [];
+  urlAPI = 'http://localhost:8080/api';
 
   constructor(private httpClient: HttpClient, private router: Router) {
   }
@@ -20,19 +21,24 @@ export class FindALessonComponent implements OnInit {
   }
 
   private loadData(): void {
-    this.httpClient.get<LessonDTO[]>('http://localhost:8080/api/lessons')
+    this.httpClient.get<LessonDTO[]>(this.urlAPI + '/lessons')
       .subscribe(lessons => this.lessons = lessons);
   }
 
   // needs to be corrected (you can order a lesson that has already been ordered) !!!
-  orderLesson(id: number): void {
-    this.httpClient.put('http://localhost:8080/api/lessons/' + id, {})
+  orderLesson(lessonId: number, teacherId: number): void {
+    this.httpClient.put(this.urlAPI + '/lessons/' + lessonId, {})
       .subscribe(
         () => {
           alert('Lesson successfully ordered.');
           this.router.navigate(['my-lessons']);
         }
       );
+
+      const headers = new HttpHeaders({'Content-Type':'application/json; charset=utf-8'});    
+      this.httpClient.patch( this.urlAPI + '/users/' + teacherId, true, {headers: headers})
+        .subscribe();  
   }
+
 
 }

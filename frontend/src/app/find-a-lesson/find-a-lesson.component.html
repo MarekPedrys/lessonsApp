@@ -17,7 +17,7 @@
         <p class="card-text">Time: {{lesson.time}}</p>
         <h5 class="card-text">{{lesson.price}} € for {{lesson.duration}} minutes </h5>
         <p class="card-text">{{lesson.pupil}}</p>
-        <a class="btn btn-primary" (click)="orderLesson(lesson.id)"
+        <a class="btn btn-primary" (click)="orderLesson(lesson.id, lesson.teacherId)"
            *ngIf="loggedUserRole==='ROLE_PUPIL'">Order this lesson</a>
       </div>
     </div>

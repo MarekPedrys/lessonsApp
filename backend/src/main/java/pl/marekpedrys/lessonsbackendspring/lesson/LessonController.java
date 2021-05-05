@@ -81,10 +81,10 @@ public class LessonController {
         lesson.setPupil(loggedPupil);
         lessonRepository.save(lesson);
 
-        User teacher = lesson.getTeacher();
-        teacher.setHasNewOrder(true);
+//        User teacher = lesson.getTeacher();
+//        teacher.setHasNewOrder(true);
+//        userRepository.save(teacher);
 
-        userRepository.save(teacher);
     }
 
 }

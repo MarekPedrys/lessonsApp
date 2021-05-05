@@ -55,7 +55,7 @@ public class UserController {
         return new UserDTO(id, username, role, hasNewOrder, photo);
     }
 
-    @PutMapping("/{userId}")
+    @PatchMapping("/{userId}")
     public void updateTeacherHasNewOrder(@PathVariable Long userId, @RequestBody Boolean requestHasNewOrder) {
         User storedTeacher = userRepository.findById(userId).get();
         storedTeacher.setHasNewOrder(requestHasNewOrder);
